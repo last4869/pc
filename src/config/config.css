@@ -1,0 +1,26 @@
+.vertical, .horizontal {
+  display: flex;
+}
+.vertical {
+  justify-content: center;
+}
+.horizontal {
+  align-items: center;
+}
+.center {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.el-form {
+  width: 400px;
+  padding: 50px 30px;
+  box-shadow: 0px 0px 15px 2px #ccc;
+}
+.el-form-item__content {
+  text-align: left;
+}
+.el-button {
+  width: 30%;
+}
