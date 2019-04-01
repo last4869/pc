@@ -27,13 +27,13 @@
       </div>
     <!-- </main> -->
   </div>
-</template>
+</template>'
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
 export default class Bangumi extends Vue {
-  searchValue: string = 'hello world'
+  searchValue: string = ''
   currentPage4: number = 4
   handleSizeChange (val: number) {
     console.log(`每页 ${val} 条`)

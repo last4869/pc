@@ -33,8 +33,8 @@
       </div>
     </div>
     <div class="container">
-      <article>主体</article>
-      <aside>staff</aside>
+      <!-- <article>主体</article>
+      <aside>staff</aside> -->
     </div>
   </div>
 </template>

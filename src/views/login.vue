@@ -19,8 +19,8 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({})
 
 export default class Login extends Vue {
-  username: string = 'last order'
-  password: string = '123456'
+  username: string = ''
+  password: string = ''
   onSubmit () {
     console.log('submit!')
   }

@@ -62,8 +62,6 @@ export default class Home extends Vue {
     width: 1300px;
     color: black;
     margin: auto;
-    border-left: 2px solid red;
-    border-right: 2px solid red;
     box-sizing: border-box;
   }
   .el-main {

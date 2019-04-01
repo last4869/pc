@@ -26,7 +26,8 @@ export default class Login extends Vue {
     this.defaultActive()
   }
   defaultActive (): string {
-    this.activeName = this.date[new Date().getDay() - 1]
+    let getDay = new Date().getDay()
+    getDay === 0 ? this.activeName = this.date[this.date.length - 1] : this.activeName = this.date[getDay - 1]
     return this.activeName
   }
 }

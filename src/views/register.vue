@@ -25,8 +25,8 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({})
 
 export default class Register extends Vue {
-  username: string = 'last order'
-  password: string = '123456'
+  username: string = ''
+  password: string = ''
   sex: string = '保密'
   onSubmit () {
     console.log('submit!')
