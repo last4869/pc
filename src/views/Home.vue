@@ -1,35 +1,31 @@
 <template>
   <div class="home">
-    <el-container>
-      <el-header>
-        <div class="main horizontal">
-          <div class="left">
-            <ul class="center">
-              <router-link to="/bangumi" tag="li">主页</router-link>
-              <router-link to="newBangumi" tag="li">新番</router-link>
-            </ul>
-          </div>
-          <div class="right">
-            <ul class="center">
-              <router-link to="login" tag="li">登陆</router-link>
-              <router-link to="register" tag="li">注册</router-link>
-            </ul>
-          </div>
+    <el-header>
+      <div class="main horizontal">
+        <div class="left">
+          <ul class="center">
+            <router-link to="/bangumi" tag="li">主页</router-link>
+            <router-link to="newBangumi" tag="li">新番</router-link>
+          </ul>
         </div>
-      </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-      <el-footer class="center" height="auto">
-        <ul>
-          <li>制作人：last order</li>
-          <li>如果有问题或者建议，请联系QQ：2495713984</li>
-          <li>版权说明：本站所有内容，均属于版权方所有。</li>
-          <li>特别说明：本站属于个人制作，不涉及任何盈利行为。</li>
-          <li>2019年3月14日到至今</li>
-        </ul>
-      </el-footer>
-    </el-container>
+        <div class="right">
+          <ul class="center">
+            <router-link to="login" tag="li">登陆</router-link>
+            <router-link to="register" tag="li">注册</router-link>
+          </ul>
+        </div>
+      </div>
+    </el-header>
+    <el-main>
+      <router-view></router-view>
+    </el-main>
+    <el-footer class="center" height="100px">
+      <ul>
+        <li>关于本站</li>
+        <li>意见反馈</li>
+        <li>联系我们</li>
+      </ul>
+    </el-footer>
   </div>
 </template>
 <script lang="ts">
@@ -46,9 +42,9 @@ export default class Home extends Vue {
 }
 </script>
 <style>
-  .el-container {
-    width: 100%;
-    height: 100%;
+  .home {
+    min-width: 1200px;
+    box-sizing: border-box;
   }
   .el-header .main {
     height: 100%;
@@ -59,20 +55,19 @@ export default class Home extends Vue {
     padding: 0;
   }
   .el-main, .main {
-    width: 1300px;
+    width: 1200px;
     color: black;
     margin: auto;
     box-sizing: border-box;
   }
   .el-main {
+    height: 100%;
     overflow: inherit;
+    min-height: 800px;
+    padding: 15px;
   }
 </style>
 <style lang="scss" scoped>
-  .home {
-    width: 100%;
-    height: 100%;
-  }
   .router-link-active {
     background: rgba(255, 255, 255, .5);
   }
@@ -89,7 +84,6 @@ export default class Home extends Vue {
         height: 100%;
         line-height: 60px;
         cursor: pointer;
-        // border: 2px solid red;
         &:hover {
           background: rgba(255, 255, 255, .5);
         }
@@ -97,13 +91,14 @@ export default class Home extends Vue {
     }
   }
   .el-footer {
-    color: white;
-  }
-  .el-footer {
-    padding: 25px 0;
     background: #888;
-    ul li {
-      line-height: 30px;
+    color: white;
+    ul {
+      display: flex;
+      li {
+        margin-right: 25px;
+        font-size: 16px;
+      }
     }
   }
 </style>

@@ -12,10 +12,15 @@ export default new Router({
       redirect: '/home'
     },
     {
+      path: '/test',
+      name: 'test',
+      component: () => import('./views/test.vue')
+    },
+    {
       path: '/Home',
       name: 'Home',
       component: () => import('./views/Home.vue'),
-      redirect: '/bangumi',
+      redirect: '/newBangumi',
       children: [{
         path: '/bangumi',
         name: 'bangumi',

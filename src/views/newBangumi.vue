@@ -1,18 +1,16 @@
 <template>
   <div class="newBangumi">
-    <el-tabs v-model="activeName">
-      <el-tab-pane v-for="(item, index) in date" :key="index" :label="'周' + item" :name="item">
-        <ul>
-          <li v-for="(item, index) in 20" :key="index">
-            <img src="../assets/img/test.webp" alt="">
-            <div>
-              <span>转生成为史莱姆的这件事</span>
-              <span>17:00</span>
-            </div>
-          </li>
-        </ul>
-      </el-tab-pane>
-    </el-tabs>
+    <div :class="['date', activeName === item ? 'active' : '']" v-for="(item, index) in date" :key="index">
+      <span class="Date current">星期{{item}}</span>
+      <Timeline>
+        <Timeline-item v-for="(item, index) in index + 1" :key="index">
+          <p class="time">17:00</p>
+          <img src="../assets/img/misaka.webp" alt="">
+          <p class="content">魔法禁书目录3</p>
+          <p class="content">第26话</p>
+        </Timeline-item>
+      </Timeline>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -33,38 +31,32 @@ export default class Login extends Vue {
 }
 </script>
 <style>
-  .el-tabs__item {
-    width: 170px;
-    text-align: center;
-  }
 </style>
+<style lang="scss">
+.time{
+  font-size: 14px;
+  font-weight: bold;
+}
+
+</style>
+
 <style lang="scss" scoped>
   .newBangumi {
-    padding: 50px;
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      li {
-        width: 108px;
-        border-radius: 10px;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        margin: 10px;
-        img {
-          width: 100%;
-          height: 70px;
-          margin: 0px 0 10px;
-        }
-        div {
-          display: flex;
-          flex-direction: column;
-          font-size: 14px;
-          span {
-            line-height: 20px;
-          }
-        }
+    padding: 50px 0;
+    display: flex;
+    .date {
+      flex: 1;
+      .ivu-timeline {
+        margin-top: 40px;
+      }
+      img {
+        width: 72px;
+        margin: 10px 0;
+      }
+    }
+    .active {
+      .current {
+        color: #409EFF;
       }
     }
   }

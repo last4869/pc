@@ -6,15 +6,14 @@
       </el-input>
     </div>
     <!-- <main> -->
-      <ul>
-        <router-link v-for="(item, index) in 12" :key="index" class="center" tag="li" :to="{name: 'bangumiDetail', query: {id: index}}">
+      <el-row tag="ul">
+        <el-col :span="3" class="center" tag="li" v-for="(item, index) in 14" :key="index" :to="{name: 'bangumiDetail', query: {id: index}}">
           <img src="../assets/img/test.webp" class="image">
-          <!-- <img src="" class="image" loading> -->
-            <div>
-              <span>转生成为史莱姆的这件事</span>
-            </div>
-        </router-link>
-      </ul>
+          <div>
+            <span>转生成为史莱姆的这件事</span>
+          </div>
+        </el-col>
+      </el-row>
       <div class="pagination">
         <el-pagination
           @size-change="handleSizeChange"
@@ -81,20 +80,17 @@ export default class Bangumi extends Vue {
     display: flex;
     flex-wrap: wrap;
     li {
-      flex: 0 1 0;
+      width: 14.58%;
+      margin-right: 2.5%;
       flex-direction: column;
-      box-shadow: 5px 5px 10px #ccc;
-      border-radius: 5px;
-      padding: 15px;
-      margin: 15px;
-      // perspective: 200px;
-      transform-style: preserve-3d;
-      transform-origin: center center;
+      &:nth-child(6n) {
+        margin-right: 0;
+      }
       img {
-        width: 150px;
-        height: 190px;
+        width: 100%;
       }
       div {
+        width: 100%;
         height: 50px;
         overflow: hidden;
         text-overflow: ellipsis;
