@@ -6,6 +6,7 @@ import './plugins/iview.js'
 import './plugins/element.js'
 import './plugins/vueLazyload.js'
 import './assets/css/reset.css'
+import './assets/css/iconfont.css'
 Vue.config.productionTip = false
 
 new Vue({

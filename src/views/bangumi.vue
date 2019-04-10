@@ -7,11 +7,13 @@
     </div>
     <!-- <main> -->
       <el-row tag="ul">
-        <el-col :span="3" class="center" tag="li" v-for="(item, index) in 14" :key="index" :to="{name: 'bangumiDetail', query: {id: index}}">
-          <img src="../assets/img/test.webp" class="image">
-          <div>
-            <span>转生成为史莱姆的这件事</span>
-          </div>
+        <el-col :span="3" class="center" tag="li" v-for="(item, index) in 14" :key="index">
+          <router-link  :to="{name: 'bangumiDetail', query: {id: index}}">
+            <img src="../assets/img/test.webp" class="image">
+            <div>
+              <span>转生成为史莱姆的这件事</span>
+            </div>
+          </router-link>
         </el-col>
       </el-row>
       <div class="pagination">
@@ -97,7 +99,6 @@ export default class Bangumi extends Vue {
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
-        margin-top: 10px;
         color: #888;
         text-align: left;
         line-height: 24px;
@@ -109,12 +110,4 @@ export default class Bangumi extends Vue {
       }
     }
   }
-  // @media screen and (max-width: 750px) {
-  //   ul li {
-  //     img {
-  //       width: 180px;
-  //       height: 280px;
-  //     }
-  //   }
-  // }
 </style>
