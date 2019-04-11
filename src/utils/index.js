@@ -1,4 +1,4 @@
-import {Format} from './time.js'
+import { Format } from './time.js'
 
 export {
   Format

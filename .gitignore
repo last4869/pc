@@ -4,6 +4,7 @@
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/
+/src/assets/video/
 
 # local env files
 .env.local

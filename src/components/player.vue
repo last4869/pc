@@ -3,8 +3,13 @@
     <video ref="video"
       :width="options.width"
       :height="options.height"
-      src="../assets/video/映画『天気の子』予報（予告篇）.mp4"
+      :autoplay="options.autoplay"
+      :loop="options.loop"
+      preload="preload"
+      @canplay="canplay"
+      @error="error"
       @timeupdate="timeupdate">
+      <source v-for="(item, index) in options.source" :key="index" :src="item.video" type="video/mp4"/>
     </video>
     <div class="controlBox" ref="progressBox">
       <div class="progressBox">
@@ -26,20 +31,42 @@
         </div>
       </div>
       <div class="right">
-        <span :class="['volume icon iconfont', volumeIcon]"></span>
+        <span :class="['volume icon iconfont', volumeIcon]" @click="muted"></span>
         <div class="volumeBox" ref="volumeBox">
           <div class="progressLine" ref="volumeLine" @click="volume">
             <div class="progress" ref="volume"></div>
           </div>
           <div class="progressBar"  ref="volumeBar" @mousemove="volumeMove($event)"></div>
         </div>
+        <span class="icon iconfont icon-kongzhi"></span>
         <span class="fullscreen icon iconfont icon-fullscreen" @click="fullScreen"></span>
       </div>
     </div>
+    <ul class="controls">
+      <li class="list">
+        <span class="title">速度控制</span>
+        <div class="content slider">
+          <el-slider
+            v-model="options.speed"
+            :min="0"
+            :max="2"
+            :step="0.1"
+            :show-tooltip="false"
+            @change="change">
+          </el-slider>
+        </div>
+      </li>
+      <li class="list">
+        <span class="title">播放模式</span>
+        <div class="content">
+          <div class="playMode" v-for="(item, index) in playMode" :key="index">{{item}}</div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
-import {Format} from '../utils/index.js'
+import { Format } from '../utils/index.js'
 export default {
   data () {
     return {
@@ -47,30 +74,91 @@ export default {
       player: undefined,
       currentTime: '00:00:00',
       duration: '00:00:00',
+      playMode: ['洗脑循环', '列表播放', '列表循环'],
       options: {
-        width: 708,
-        height: 400,
-        fullScreen: false
+        width: '100%',
+        height: '100%',
+        source: [{
+          video: '../assets/video/一拳超人第二季01.mp4'
+        },
+        {
+          video: '../assets/video/异世界四重奏01.mp4'
+        },
+        {
+          video: '../assets/video/映画『天気の子』予報（予告篇）.mp4'
+        }],
+        fullScreen: false,
+        speed: 0,
+        autoplay: false,
+        loop: false
       },
       volumeIcon: 'icon-yinliang'
     }
   },
   mounted () {
     this.player = this.$refs.video
-    this.init()
+    /*
+      video.error：
+        MEDIA_ERR_ABORTED(数字值为1)，媒体数据的下载过程由于用户的操作原因而被终止。
+        MEDIA_ERR_NETWORK(数字值为2)，确认媒体资源可用，但是在下载出现网络错误，媒体数据的下载过程被中止。
+        MEDIA_ERR_DECODE(数字值为3)，确认媒体资源可用，但是解码时发生错误。
+        MEDIA_ERR_SRC_NOT_SUPPORTED(数字值为4)，媒体资源不可用或媒体格式不被支持。
+
+      video.networkState：
+        NETWORK_EMPTY（数字值为0）：元素处于初始状态。
+        NETWORK_IDLE(数字值为1)，浏览器已选择好用什么编码格式来播放媒体，但是尚未建立网络连接。
+        NETWORK_LOADING(数字值为2)：媒体数据加载中
+        NETWORK_NO_SOURCE(数字值为3)，没有支持的编码格式，不执行加载。
+    */
+    console.log(this.player.error)
+    console.log(this.player.networkState)
+    window.onkeydown = ev => {
+      if (ev.keyCode === 32) this.play()
+    }
   },
   methods: {
-    init () {
-      console.log(this.$refs)
-      this.currentTime = this.player.currentTime
-      this.duration = this.player.duration
+    error (res) {
+      console.log(this.player.error)
     },
+    // video已经准备好播放
+    canplay () {
+      this.duration = Format(this.player.duration)
+    },
+    // 播放
     play () {
       this.playStatus = this.player.paused ? this.player.play() : this.player.pause()
     },
+    // 改变播放速率
+    change (speed) {
+      this.player.playbackRate = speed
+      console.log(speed)
+    },
+    // 进入全屏
+    FullScreen () {
+      let el = document.documentElement
+      if (el.requestFullscreen) {
+        el.requestFullscreen()
+      } else if (el.mozRequestFullScreen) {
+        el.mozRequestFullScreen()
+      } else if (el.webkitRequestFullScreen) {
+        el.webkitRequestFullScreen()
+      }
+    },
+    // 退出全屏
+    ExitFullscreen () {
+      var doc = document
+      if (doc.exitFullscreen) {
+        doc.exitFullscreen()
+      } else if (doc.mozCancelFullScreen) {
+        doc.mozCancelFullScreen()
+      } else if (doc.webkitCancelFullScreen) {
+        doc.webkitCancelFullScreen()
+      }
+    },
+    // 全屏
     fullScreen () {
       this.options.fullScreen = !this.options.fullScreen
-      this.options.fullScreen ? this.player.webkitRequestFullScreen() : this.player.webkitExitFullScreen()
+      this.options.fullScreen ? this.FullScreen() : this.ExitFullscreen()
     },
     jump (e) {
       let videoProgress = this.$refs.videoProgress
@@ -112,18 +200,25 @@ export default {
         document.onmousemove = null
       }
     },
+    // 静音
+    muted () {
+      this.player.muted = !this.player.muted
+      this.player.muted ? this.volumeIcon = 'icon-guanbiyinliang' : this.volumeIcon = 'icon-yinliang'
+    },
+    // 修改音量图标
     volumeChangeIcon () {
       let volume = this.player.volume
-      if (volume > .75) {
+      if (volume > 0.75) {
         this.volumeIcon = 'icon-yinliang'
-      } else if (volume > .4 && volume < .75) {
+      } else if (volume > 0.4 && volume < 0.75) {
         this.volumeIcon = 'icon-yinliangdaxiao'
-      } else if (volume > 0 && volume < .4) {
+      } else if (volume > 0 && volume < 0.4) {
         this.volumeIcon = 'icon-zuixiaoyinliang'
       } else if (volume === 0) {
         this.volumeIcon = 'icon-guanbiyinliang'
       }
     },
+    // 拖拽调整音量大小
     volumeMove () {
       const volumeLine = this.$refs.volumeLine
       const volumeBar = this.$refs.volumeBar
@@ -150,6 +245,7 @@ export default {
         document.onmousemove = null
       }
     },
+    // 点击调整音量大小
     volume (e) {
       const volumeLine = this.$refs.volumeLine
       const volumeBar = this.$refs.volumeBar
@@ -166,29 +262,30 @@ export default {
       this.player.volume = volumeSize
       this.volumeChangeIcon()
     },
+    // 视频时间调整的操作
     timeupdate () {
-      // this.currentTime = Format(this.player.currentTime, false)
-      // this.duration = Format(this.player.duration, false)
-      // let videoProgress = this.$refs.videoProgress.clientWidth
-      // let videoProgressLine = this.$refs.videoProgressLine.clientWidth
-      // console.log(videoProgress, videoProgressLine)
-      // let position = (this.player.currentTime / this.player.duration) * 100 + '%'
-      // this.$refs.videoProgress.style.width = position
-      // this.$refs.videoProgressBar.style.left = videoProgress - this.$refs.videoProgressBar.clientWidth + 3 + 'px'
-      // console.log(this.$refs.videoProgressBar.style.left)
+      let videoProgress = this.$refs.videoProgress
+      let videoProgressLine = this.$refs.videoProgressLine
+      let videoProgressBar = this.$refs.videoProgressBar
+      let position = (this.player.currentTime / this.player.duration) * videoProgressLine.clientWidth
+      let max = videoProgress.clientWidth - videoProgressBar.clientWidth + 3
+      this.currentTime = Format(this.player.currentTime, false)
+      if (max < 0) max = 0
+      videoProgress.style.width = position + 'px'
+      videoProgressBar.style.left = max + 'px'
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
 @import '../assets/css/player.scss';
-
-video::-webkit-media-controls{
-  display:none !important;
-}
+// video::-webkit-media-controls{
+//   display:none !important;
+// }
 .player{
-  width: 708px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   position: relative;
   box-sizing: border-box;
   z-index: 2147483650 !important;
@@ -213,8 +310,12 @@ video::-webkit-media-controls{
     }
     .icon {
       font-size: 20px;
+      margin: 0 10px;
     }
     .icon-tingzhi {
+      font-size: 24px;
+    }
+    .icon-kongzhi {
       font-size: 24px;
     }
     .icon-caret-right {
@@ -222,8 +323,6 @@ video::-webkit-media-controls{
     }
     .icon-caret-right, .icon-tingzhi {
       width: 30px;
-      // border: 2px solid red;
-      margin: 0 15px;
       text-align: center;
       display: inline-block;
     }
@@ -257,7 +356,7 @@ video::-webkit-media-controls{
       .progress {
         width: 0%;
         height: 100%;
-        background: $primaryColor;
+        background: #409EFF;
       }
     }
     .progressBar {
@@ -268,6 +367,7 @@ video::-webkit-media-controls{
       position: absolute;
       top: -5px;
       left: 0;
+      border: 2px solid #409EFF;
     }
     .play {
       margin-right: 20px;
@@ -282,6 +382,53 @@ video::-webkit-media-controls{
     .left, .right {
       display: flex;
       align-items: center;
+    }
+  }
+  .controls {
+    width: 200px;
+    padding: 10px;
+    z-index: 10;
+    background: white;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 10%;
+    left: 80%;
+    border: 2px solid red;
+    font-size: 14px;
+    li {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      &:nth-child(2) {
+        .content {
+          display: flex;
+          flex: 1;
+          flex-wrap: wrap;
+        }
+      }
+    }
+    .playMode {
+      color: white;
+      width: 78px;
+      padding: 10px;
+      background: #409EFF;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  }
+  @media screen and (min-width: 960px) and (max-width: 1200px) {
+    .controlBox {
+      height: 10%;
+    }
+  }
+  @media screen and (min-width: 1200px){
+    .controlBox {
+      height: 8%;
+    }
+  }
+  @media screen and (min-width: 1600px){
+    .controlBox {
+      height: 6%;
     }
   }
 }
