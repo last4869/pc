@@ -3,7 +3,7 @@
     <div :class="['date', activeName === item ? 'active' : '']" v-for="(item, index) in date" :key="index">
       <span class="Date current">星期{{item}}</span>
       <Timeline>
-        <Timeline-item v-for="(item, index) in index + 1" :key="index">
+        <Timeline-item v-for="(item, index) in 2" :key="index">
           <p class="time">17:00</p>
           <img src="../assets/img/misaka.webp" alt="">
           <p class="content">魔法禁书目录3</p>

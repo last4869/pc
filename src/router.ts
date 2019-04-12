@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'test',
-      redirect: '/test'
+      name: 'home',
+      redirect: '/home'
     },
     {
       path: '/test',
@@ -17,8 +17,8 @@ export default new Router({
       component: () => import('./views/test.vue')
     },
     {
-      path: '/Home',
-      name: 'Home',
+      path: '/home',
+      name: 'home',
       component: () => import('./views/Home.vue'),
       redirect: '/bangumi',
       children: [{
@@ -35,6 +35,11 @@ export default new Router({
         path: '/newBangumi',
         name: 'newBangumi',
         component: () => import('./views/newBangumi.vue')
+      },
+      {
+        path: '/player',
+        name: 'player',
+        component: () => import('./views/player.vue')
       },
       {
         path: '/login',

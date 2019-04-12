@@ -43,12 +43,15 @@ export default class Home extends Vue {
 <style>
   .home {
     min-width: 1200px;
+    height: 100%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
   }
   .el-header .main {
-    height: 100%;
     justify-content: space-between;
     color: white;
+    flex: 0 0 auto;
   }
   .el-header, .el-main, .el-footer {
     padding: 0;
@@ -59,11 +62,16 @@ export default class Home extends Vue {
     margin: auto;
     box-sizing: border-box;
   }
+  .el-footer {
+    flex: 0 0 auto;
+  }
   .el-main {
-    height: 100%;
+    flex: 1 0 auto;
     overflow: inherit;
-    min-height: 800px;
     padding: 15px;
+  }
+  .el-footer {
+    flex: 0 0 auto;
   }
 </style>
 <style lang="scss" scoped>

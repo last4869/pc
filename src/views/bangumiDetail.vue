@@ -37,8 +37,8 @@
       <article>
         <h2>集数详情</h2>
          <el-row tag="ul" class="list">
-          <el-col :span="2" tag="li" v-for="(item, index) in 24" :key="index">
-            {{item}}
+          <el-col :span="2" tag="li" v-for="(item, index) in 24" :key="index"  @click.native="jump">
+            <span >{{item}}</span>
           </el-col>
         </el-row>
       </article>
@@ -90,15 +90,58 @@
         </div>
       </aside>
     </div>
+    <div class="mask" v-show="mask" >
+      <div class="player">
+        <span class="icon iconfont icon-close" @click="close"></span>
+        <player></player>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-@Component({})
-export default class Login extends Vue {
+import player from '../components/player.vue'
+@Component({
+  components: {
+    player
+  }
+})
+export default class BangumiDetail extends Vue {
+  mask: Boolean = true
+  jump () {
+    this.mask = true
+  }
+  close () {
+    this.mask = false
+  }
 }
 </script>
 <style lang="scss" scoped>
+  .mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .player {
+      min-width: 1100px;
+      min-height: 621px;
+      position: relative;
+    }
+    .icon-close {
+      position: absolute;
+      right: -17.5px;
+      top: -17.5px;
+      color: white;
+      display: inline-block;
+      z-index: 1;
+      font-size: 35px;
+    }
+  }
   .bangumiDetail {
     padding-top: 20px;
     .bg {
