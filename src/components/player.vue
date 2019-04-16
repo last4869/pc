@@ -1,18 +1,18 @@
 <template>
-  <div class="player" ref="playerBox">
-    <video ref="video"
-      src="../assets/video/映画『天気の子』予報（予告篇）.mp4"
+  <div class="playerBox" ref="playerBox">
+    <video ref="player"
+      src="http://bangumi.xyz/video.mp4"
       :width="options.width"
       :height="options.height"
       :autoplay="options.autoplay"
       :loop="options.loop"
-      preload="preload"
-      @canplay="canplay"
-      @error="error"
-      @timeupdate="timeupdate">
+      preload="auto"
+      @canplay.stop="canplay"
+      @error.stop="error"
+      @timeupdate.stop="timeupdate">
       <!-- <source v-for="(item, index) in options.source" :key="index" :src="item.video" type="video/mp4"/> -->
     </video>
-    <div class="controlBox" ref="progressBox">
+    <div class="controlBox" ref="controlBox">
       <ul class="controls" v-show="showSetting">
         <li class="list">
           <span class="title">速度控制</span>
@@ -38,8 +38,9 @@
       <div class="progressBox">
         <div class="progressLine" ref="videoProgressLine" @click="jump">
           <div class="progress" ref="videoProgress"></div>
+          <div class="preload" ref="preload"></div>
         </div>
-        <div class="progressBar" ref="videoProgressBar" @mousemove="progressMove"></div>
+        <div class="progressBar" ref="videoProgressBar" @mousemove.stop="progressMove" @mouseup.stop="mouseUp"></div>
       </div>
       <div class="left">
         <!-- 播放按钮 -->
@@ -62,7 +63,7 @@
           <div class="progressLine" ref="volumeLine" @click="volume">
             <div class="progress" ref="volume"></div>
           </div>
-          <div class="progressBar"  ref="volumeBar" @mousemove="volumeMove($event)"></div>
+          <div class="progressBar"  ref="volumeBar" @mousemove.stop="volumeMove" @mouseup.stop="mouseUp"></div>
         </div>
         <!-- 设置部分 -->
         <span class="icon iconfont icon-kongzhi" @click="setting"></span>
@@ -98,17 +99,36 @@ export default {
         source: ['../assets/video/一拳超人第二季01.mp4', '../assets/video/movie.ogg', '../assets/video/异世界四重奏01.mp4', '../assets/video/映画『天気の子』予報（予告篇）.mp4'],
         defaultPlayMode: '单集播放',
         fullScreen: false,
-        speed: 0,
+        speed: 1,
         autoplay: false,
         loop: false
+      },
+      // 全局的el
+      init: {
+        playerBox: undefined,
+        player: undefined,
+        controlBox: undefined,
+        videoProgressLine: undefined,
+        videoProgress: undefined,
+        videoProgressBar: undefined,
+        volumeBox: undefined,
+        volumeLine: undefined,
+        volumeBar: undefined,
+        volume: undefined,
+        preload: undefined
       },
       volumeIcon: 'icon-yinliang',
       showSetting: false
     }
   },
   mounted () {
-    this.player = this.$refs.video
+    this.init = {
+      ...this.$refs
+    }
+    this.player = this.$refs.player
     /*
+    http://zm.ayypd.cn/index.php/m3u8/7debQblQzBGyXXoPkJtz6EuW0KDWtsYl5cWwomqbHGbGxQi2dogeePXZlTlIPpws4nVk91N0JN9trQg.m3u8
+    // 测试地址
       readyState表示音频/视频元素的就绪状态：
         0 = HAVE_NOTHING - 没有关于音频/视频是否就绪的信息
         1 = HAVE_METADATA - 关于音频/视频就绪的元数据
@@ -130,27 +150,50 @@ export default {
     console.log('错误信息' + this.player.error)
     console.log('就绪状态' + this.player.readyState)
     console.log('网络状态' + this.player.networkState)
-    window.onkeydown = ev => {
-      /**
-       * 32 空格播放暂停
-       * 70 F 进入和退出全屏
-       * 77 M 调整是否静音
-       */
-      if (ev.keyCode === 32) this.play()
-      if (ev.keyCode === 70) this.fullScreen()
-      if (ev.keyCode === 77) this.muted()
-      console.log(ev.keyCode)
-    }
+    this.shortcutKey()
+    this.mouseUp()
   },
   methods: {
+    // 快捷键
+    shortcutKey () {
+      window.onkeydown = ev => {
+        /**
+         * 32 空格播放暂停
+         * 70 F 进入和退出全屏
+         * 77 M 调整是否静音
+         */
+        if (ev.keyCode === 32) this.play()
+        if (ev.keyCode === 70) this.fullScreen()
+        if (ev.keyCode === 77) this.muted()
+        console.log(ev.keyCode)
+      }
+    },
+    mouseUp () {
+      document.onmouseup = (ev) => {
+        ev.stopPropagation()
+        document.onmousemove = (ev) => {
+          ev.preventDefault()
+        }
+      }
+    },
     error (res) {
       console.log(this.player.error)
     },
     setting () {
       this.showSetting = !this.showSetting
     },
+    // 预加载
+    preload () {
+      const len = this.player.buffered.length - 1
+      const {videoProgressLine, preload} = this.init
+      const start = this.player.buffered.start(len)
+      const end = this.player.buffered.end(len)
+      let position = (end / this.player.duration) * videoProgressLine.offsetWidth
+      preload.style.width = position.toFixed(2) + 'px'
+    },
     // video已经准备好播放
     canplay () {
+      this.preload()
       this.loading = false
       this.duration = Format(this.player.duration)
     },
@@ -161,7 +204,6 @@ export default {
     // 改变播放速率
     change (speed) {
       this.player.playbackRate = speed
-      console.log(speed)
     },
     /**
      * @param {number} min 最小数值
@@ -216,7 +258,8 @@ export default {
     },
     // 进入全屏
     FullScreen () {
-      let el = document.documentElement
+      const {playerBox} = this.init
+      const el = playerBox
       if (el.requestFullscreen) {
         el.requestFullscreen()
       } else if (el.mozRequestFullScreen) {
@@ -243,33 +286,22 @@ export default {
     },
     // 点击跳转进度
     jump (e) {
-      let videoProgress = this.$refs.videoProgress
-      let videoProgressLine = this.$refs.videoProgressLine
-      let videoProgressBar = this.$refs.videoProgressBar
-      let currentTime = e.offsetX / videoProgressLine.clientWidth * this.player.duration
+      const {videoProgress, videoProgressLine, videoProgressBar} = this.init
+      let currentTime = e.offsetX / videoProgressLine.offsetWidth * this.player.duration
       let position = e.offsetX
-      if ((position - videoProgressBar.offsetWidth) <= 0) {
-        position = 0
-      } else if (position > (videoProgressLine.clientWidth - videoProgressBar.offsetWidth)) {
-        position = videoProgressLine.clientWidth - videoProgressBar.offsetWidth
-      }
+      this.preload()
       this.currentTime = Format(currentTime)
-      console.log(position, e.offsetX)
       this.player.currentTime = currentTime
       videoProgress.style.width = position + 'px'
       videoProgressBar.style.left = position + 'px'
     },
     // 拖拽调整进度
     progressMove () {
-      let videoProgress = this.$refs.videoProgress
-      let videoProgressLine = this.$refs.videoProgressLine
-      let videoProgressBar = this.$refs.videoProgressBar
-      let videoProgressBox = this.$refs.progressBox
-      let playerBox = this.$refs.playerBox
+      const {videoProgress, videoProgressLine, videoProgressBar, controlBox, playerBox} = this.init
       document.onmousedown = () => {
         document.onmousemove = (ev) => {
-          let position = ev.clientX - videoProgressBox.offsetLeft - playerBox.offsetLeft
-          let maxMovePoint = videoProgressLine.clientWidth - videoProgressBar.clientWidth
+          let position = ev.clientX - controlBox.offsetLeft - playerBox.offsetLeft
+          let maxMovePoint = videoProgressLine.offsetWidth - videoProgressBar.offsetWidth
           if (position > maxMovePoint) {
             position = maxMovePoint
           } else if (position < 0) {
@@ -281,9 +313,6 @@ export default {
           videoProgress.style.width = position + 'px'
           videoProgressBar.style.left = position + 'px'
         }
-      }
-      document.onmouseup = () => {
-        document.onmousemove = null
       }
     },
     // 静音
@@ -306,15 +335,11 @@ export default {
     },
     // 拖拽调整音量大小
     volumeMove () {
-      const volumeLine = this.$refs.volumeLine
-      const volumeBar = this.$refs.volumeBar
-      const volume = this.$refs.volume
-      const volumeBox = this.$refs.volumeBox
-      const playerBox = this.$refs.playerBox
+      const {volumeLine, volumeBar, volume, volumeBox, playerBox} = this.init
       document.onmousedown = () => {
         document.onmousemove = (ev) => {
           let position = ev.clientX - volumeBox.offsetLeft - playerBox.offsetLeft
-          let maxMovePoint = volumeLine.clientWidth - volumeBar.clientWidth
+          let maxMovePoint = volumeLine.offsetWidth - volumeBar.offsetWidth
           if (position > maxMovePoint) {
             position = maxMovePoint
           } else if (position < 0) {
@@ -327,21 +352,16 @@ export default {
           this.volumeChangeIcon()
         }
       }
-      document.onmouseup = () => {
-        document.onmousemove = null
-      }
     },
     // 点击调整音量大小
     volume (e) {
-      const volumeLine = this.$refs.volumeLine
-      const volumeBar = this.$refs.volumeBar
-      const volume = this.$refs.volume
+      const {volumeLine, volumeBar, volume} = this.init
       let position = e.offsetX
-      const volumeSize = Number((position / volumeLine.clientWidth).toFixed(2))
-      if ((position - volumeBar.clientWidth) <= 0) {
+      const volumeSize = Number((position / volumeLine.offsetWidth).toFixed(2))
+      if ((position - volumeBar.offsetWidth) <= 0) {
         position = 0
-      } else if (position > (volumeLine.clientWidth - volumeBar.clientWidth)) {
-        position = volumeLine.clientWidth - volumeBar.clientWidth
+      } else if (position > (volumeLine.offsetWidth - volumeBar.offsetWidth)) {
+        position = volumeLine.offsetWidth - volumeBar.offsetWidth
       }
       volume.style.width = position + 'px'
       volumeBar.style.left = position + 'px'
@@ -350,16 +370,20 @@ export default {
     },
     // 视频时间调整的操作
     timeupdate () {
-      let videoProgress = this.$refs.videoProgress
-      let videoProgressLine = this.$refs.videoProgressLine
-      let videoProgressBar = this.$refs.videoProgressBar
-      let position = (this.player.currentTime / this.player.duration) * videoProgressLine.clientWidth
-      let max = videoProgress.clientWidth - videoProgressBar.clientWidth + 3
+      this.preload()
+      console.log('开始缓冲' + this.player.buffered.start(0))
+      console.log('缓冲到哪里' + this.player.buffered.end(0))
+      const {controlBox, videoProgressLine, videoProgressBar, videoProgress} = this.init
+      let position = (this.player.currentTime / this.player.duration) * videoProgressLine.offsetWidth
+      let max
+      if (videoProgressBar.offsetLeft >= (videoProgressLine.offsetWidth - videoProgressBar.offsetWidth)) {
+        max = videoProgressLine.offsetWidth - videoProgressBar.offsetWidth
+      } else {
+        max = position
+      }
       this.currentTime = Format(this.player.currentTime, false)
-      if (max < 0) max = 0
       videoProgress.style.width = position + 'px'
       videoProgressBar.style.left = max + 'px'
-      console.log(this.options.defaultPlayMode)
       this.playMode(this.options.defaultPlayMode)
       if (this.player.ended) {
         console.log('错误信息' + this.player.error)
@@ -379,10 +403,11 @@ export default {
 .player:hover .controlBox {
   opacity: 1;
 }
-.player{
+.playerBox{
   width: 100%;
   height: 100%;
   position: relative;
+  top: 0;
   box-sizing: border-box;
   .loading, .playStatus {
     width: 100%;
@@ -399,7 +424,7 @@ export default {
       color: white;
     }
     .icon-loading {
-      animation: loading 2s linear infinite;
+      animation: loading 1.5s linear infinite;
       display: inline-block;
     }
     // .icon-video1 {
@@ -416,14 +441,14 @@ export default {
   }
   video {
     position: absolute;
-    top: 0;
+    top: 0px;
   }
   .controlBox {
     width: 100%;
-    height: 9%;
+    height: 60px;
     background: rgba(0, 0, 0, .5);
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
     color: white;
     box-sizing: border-box;
     padding: 0px 20px;
@@ -462,6 +487,39 @@ export default {
       top: 0;
       left: 0;
     }
+    .progressLine {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, .5);
+      .progress {
+        width: 0%;
+        height: 100%;
+        background: #409EFF;
+        position: absolute;
+        top: 0px;
+        left: 0%;
+        z-index: 1;
+      }
+      .preload {
+        width: 0%;
+        height: 100%;
+        background: white;
+        position: absolute;
+        top: 0px;
+        left: 0%;
+      }
+    }
+    .progressBar {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: $primaryColor;
+      position: absolute;
+      top: -5px;
+      left: 0%;
+      z-index: 1;
+      border: 2px solid #409EFF;
+    }
     .volume {
       margin-right: 10px;
     }
@@ -474,27 +532,14 @@ export default {
         border-radius: 5px;
         overflow: hidden;
       }
-    }
-    .progressLine {
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, .5);
       .progress {
-        width: 0%;
-        height: 100%;
-        background: #409EFF;
+        width: 50%;
+      }
+      .progressBar {
+        left: 50%;
       }
     }
-    .progressBar {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background: $primaryColor;
-      position: absolute;
-      top: -5px;
-      left: 0;
-      border: 2px solid #409EFF;
-    }
+    
     .play {
       margin-right: 20px;
     }

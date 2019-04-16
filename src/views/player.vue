@@ -1,5 +1,5 @@
 <template>
-  <div class="mask" @click="close">
+  <div class="mask">
     <div class="player">
       <player></player>
     </div>
@@ -28,8 +28,8 @@ export default class Home extends Vue {
     justify-content: center;
     align-items: center;
     .player {
-      // min-width: 1100px;
-      // min-height: 621px;
+      min-width: 1100px;
+      min-height: 621px;
       width: 1100px;
       height: 621px;
     }

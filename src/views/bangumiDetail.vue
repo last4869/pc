@@ -107,7 +107,7 @@ import player from '../components/player.vue'
   }
 })
 export default class BangumiDetail extends Vue {
-  mask: Boolean = true
+  mask: Boolean = false
   jump () {
     this.mask = true
   }
