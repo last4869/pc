@@ -128,6 +128,8 @@ export default class BangumiDetail extends Vue {
     justify-content: center;
     align-items: center;
     .player {
+      width: 1100px;
+      height: 621px;
       min-width: 1100px;
       min-height: 621px;
       position: relative;

@@ -9,9 +9,14 @@
           </ul>
         </div>
         <div class="right">
-          <ul class="center">
+          <ul class="center" v-if="login">
             <router-link to="login" tag="li">登陆</router-link>
             <router-link to="register" tag="li">注册</router-link>
+          </ul>
+          <ul class="center" v-else>
+            <router-link to="user" tag="li">
+              <img src="" alt="">
+            </router-link>
           </ul>
         </div>
       </div>
@@ -22,7 +27,7 @@
     <el-footer class="center" height="100px">
       <ul>
         <li>关于本站</li>
-        <li>意见反馈</li>
+        <li @click="feedback">意见反馈</li>
         <li>联系我们</li>
       </ul>
     </el-footer>
@@ -35,8 +40,12 @@ import { Component, Vue } from 'vue-property-decorator'
   }
 })
 export default class Home extends Vue {
+  login: Boolean = false
   created () {
     console.log(this.$route)
+  }
+  feedback () {
+    window.open(location.origin + '/feedback', '_blank')
   }
 }
 </script>
@@ -57,7 +66,7 @@ export default class Home extends Vue {
     padding: 0;
   }
   .el-main, .main {
-    width: 1200px;
+    width: 1300px;
     color: black;
     margin: auto;
     box-sizing: border-box;

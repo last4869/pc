@@ -30,8 +30,6 @@ export default class Login extends Vue {
   }
 }
 </script>
-<style>
-</style>
 <style lang="scss">
 .time{
   font-size: 14px;

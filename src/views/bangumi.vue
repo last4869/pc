@@ -11,7 +11,7 @@
           <router-link  :to="{name: 'bangumiDetail', query: {id: index}}">
             <img src="../assets/img/test.webp" class="image">
             <div>
-              <span>转生成为史莱姆的这件事</span>
+              <span>转生成为史莱姆的这件事转生成为史莱姆的这件事转生成为史莱姆的这件事</span>
             </div>
           </router-link>
         </el-col>
@@ -83,6 +83,7 @@ export default class Bangumi extends Vue {
     flex-wrap: wrap;
     li {
       width: 14.58%;
+      height: 320px;
       margin-right: 2.5%;
       flex-direction: column;
       &:nth-child(6n) {

@@ -1,7 +1,7 @@
 <template>
   <div class="playerBox" ref="playerBox">
     <video ref="player"
-      src="http://bangumi.xyz/video.mp4"
+      src="../assets/video/映画『天気の子』予報（予告篇）.mp4"
       :width="options.width"
       :height="options.height"
       :autoplay="options.autoplay"
@@ -104,19 +104,7 @@ export default {
         loop: false
       },
       // 全局的el
-      init: {
-        playerBox: undefined,
-        player: undefined,
-        controlBox: undefined,
-        videoProgressLine: undefined,
-        videoProgress: undefined,
-        videoProgressBar: undefined,
-        volumeBox: undefined,
-        volumeLine: undefined,
-        volumeBar: undefined,
-        volume: undefined,
-        preload: undefined
-      },
+      init: {},
       volumeIcon: 'icon-yinliang',
       showSetting: false
     }
@@ -185,7 +173,7 @@ export default {
     // 预加载
     preload () {
       const len = this.player.buffered.length - 1
-      const {videoProgressLine, preload} = this.init
+      const { videoProgressLine, preload } = this.init
       const start = this.player.buffered.start(len)
       const end = this.player.buffered.end(len)
       let position = (end / this.player.duration) * videoProgressLine.offsetWidth
@@ -258,7 +246,7 @@ export default {
     },
     // 进入全屏
     FullScreen () {
-      const {playerBox} = this.init
+      const { playerBox } = this.init
       const el = playerBox
       if (el.requestFullscreen) {
         el.requestFullscreen()
@@ -286,7 +274,7 @@ export default {
     },
     // 点击跳转进度
     jump (e) {
-      const {videoProgress, videoProgressLine, videoProgressBar} = this.init
+      const { videoProgress, videoProgressLine, videoProgressBar } = this.init
       let currentTime = e.offsetX / videoProgressLine.offsetWidth * this.player.duration
       let position = e.offsetX
       this.preload()
@@ -297,7 +285,7 @@ export default {
     },
     // 拖拽调整进度
     progressMove () {
-      const {videoProgress, videoProgressLine, videoProgressBar, controlBox, playerBox} = this.init
+      const { videoProgress, videoProgressLine, videoProgressBar, controlBox, playerBox } = this.init
       document.onmousedown = () => {
         document.onmousemove = (ev) => {
           let position = ev.clientX - controlBox.offsetLeft - playerBox.offsetLeft
@@ -335,7 +323,7 @@ export default {
     },
     // 拖拽调整音量大小
     volumeMove () {
-      const {volumeLine, volumeBar, volume, volumeBox, playerBox} = this.init
+      const { volumeLine, volumeBar, volume, volumeBox, playerBox } = this.init
       document.onmousedown = () => {
         document.onmousemove = (ev) => {
           let position = ev.clientX - volumeBox.offsetLeft - playerBox.offsetLeft
@@ -355,8 +343,8 @@ export default {
     },
     // 点击调整音量大小
     volume (e) {
-      const {volumeLine, volumeBar, volume} = this.init
       let position = e.offsetX
+      const { volumeLine, volumeBar, volume } = this.init
       const volumeSize = Number((position / volumeLine.offsetWidth).toFixed(2))
       if ((position - volumeBar.offsetWidth) <= 0) {
         position = 0
@@ -371,9 +359,7 @@ export default {
     // 视频时间调整的操作
     timeupdate () {
       this.preload()
-      console.log('开始缓冲' + this.player.buffered.start(0))
-      console.log('缓冲到哪里' + this.player.buffered.end(0))
-      const {controlBox, videoProgressLine, videoProgressBar, videoProgress} = this.init
+      const { controlBox, videoProgressLine, videoProgressBar, videoProgress } = this.init
       let position = (this.player.currentTime / this.player.duration) * videoProgressLine.offsetWidth
       let max
       if (videoProgressBar.offsetLeft >= (videoProgressLine.offsetWidth - videoProgressBar.offsetWidth)) {
@@ -397,9 +383,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/css/player.scss';
-// video::-webkit-media-controls{
-//   display:none !important;
-// }
 .player:hover .controlBox {
   opacity: 1;
 }
@@ -539,7 +522,6 @@ export default {
         left: 50%;
       }
     }
-    
     .play {
       margin-right: 20px;
     }
@@ -589,16 +571,6 @@ export default {
       text-align: center;
     }
   }
-  // @media screen and (min-width: 960px) and (max-width: 1200px) {
-  //   .controlBox {
-  //     height: 10%;
-  //   }
-  // }
-  // @media screen and (min-width: 1200px){
-  //   .controlBox {
-  //     height: 8%;
-  //   }
-  // }
   @media screen and (min-width: 1800px){
     .controlBox {
       height: 7%;
