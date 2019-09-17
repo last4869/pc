@@ -8,7 +8,7 @@
     <!-- <main> -->
       <el-row tag="ul">
         <el-col :span="3" class="center" tag="li" v-for="(item, index) in 14" :key="index">
-          <router-link  :to="{name: 'bangumiDetail', query: {id: index}}">
+          <router-link :to="{name: 'bangumiDetail', query: {id: index}}">
             <img src="../assets/img/test.webp" class="image">
             <div>
               <span>转生成为史莱姆的这件事转生成为史莱姆的这件事转生成为史莱姆的这件事</span>

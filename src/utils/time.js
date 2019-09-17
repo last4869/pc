@@ -1,4 +1,4 @@
-export const Format =  (time, temp = false) => {
+export const Format = (time, temp = false) => {
   const date = {
     day: Math.floor(time / 86400),
     second: Math.floor(time % 60),

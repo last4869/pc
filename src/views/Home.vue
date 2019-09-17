@@ -40,7 +40,7 @@ import { Component, Vue } from 'vue-property-decorator'
   }
 })
 export default class Home extends Vue {
-  login: Boolean = false
+  login: Boolean = !false
   created () {
     console.log(this.$route)
   }
