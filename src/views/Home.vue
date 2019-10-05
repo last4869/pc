@@ -51,7 +51,6 @@ export default class Home extends Vue {
 </script>
 <style>
   .home {
-    min-width: 1200px;
     height: 100%;
     box-sizing: border-box;
     display: flex;
@@ -66,7 +65,9 @@ export default class Home extends Vue {
     padding: 0;
   }
   .el-main, .main {
-    width: 1300px;
+    width: 1200px;
+    border-left: 2px solid red;
+    border-right: 2px solid red;
     color: black;
     margin: auto;
     box-sizing: border-box;
@@ -77,7 +78,6 @@ export default class Home extends Vue {
   .el-main {
     flex: 1 0 auto;
     overflow: inherit;
-    padding: 15px;
   }
   .el-footer {
     flex: 0 0 auto;

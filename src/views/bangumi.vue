@@ -5,13 +5,18 @@
         <el-button slot="append" icon="el-icon-search">搜索</el-button>
       </el-input>
     </div>
-    <!-- <main> -->
+    <main>
       <el-row tag="ul">
-        <el-col :span="3" class="center" tag="li" v-for="(item, index) in 14" :key="index">
+        <el-col
+          :span="4"
+          :offset="1"
+          tag="li"
+          v-for="(item, index) in 13" :key="index"
+        >
           <router-link :to="{name: 'bangumiDetail', query: {id: index}}">
-            <img src="../assets/img/test.webp" class="image">
+            <img src="../assets/img/test.png" class="image">
             <div>
-              <span>转生成为史莱姆的这件事转生成为史莱姆的这件事转生成为史莱姆的这件事</span>
+              <span>转生成为史莱姆的这件事</span>
             </div>
           </router-link>
         </el-col>
@@ -26,7 +31,7 @@
           :total="400" background class="vertical">
         </el-pagination>
       </div>
-    <!-- </main> -->
+    </main>
   </div>
 </template>'
 <script lang="ts">
@@ -36,6 +41,9 @@ import { Component, Vue } from 'vue-property-decorator'
 export default class Bangumi extends Vue {
   searchValue: string = ''
   currentPage4: number = 4
+  created () {
+    console.log(navigator.userAgent)
+  }
   handleSizeChange (val: number) {
     console.log(`每页 ${val} 条`)
   }
@@ -44,7 +52,7 @@ export default class Bangumi extends Vue {
   }
 }
 </script>
-<style>
+<style lang="scss">
   .el-pagination {
     width: 100%;
     margin: 50px 0;
@@ -75,20 +83,10 @@ export default class Bangumi extends Vue {
     width: 600px;
     margin: 40px auto;
   }
-  main {
-    display: flex;
-  }
   ul {
-    display: flex;
-    flex-wrap: wrap;
     li {
-      width: 14.58%;
-      height: 320px;
-      margin-right: 2.5%;
       flex-direction: column;
-      &:nth-child(6n) {
-        margin-right: 0;
-      }
+      margin-bottom: 10px;
       img {
         width: 100%;
       }
@@ -104,6 +102,9 @@ export default class Bangumi extends Vue {
         text-align: left;
         line-height: 24px;
         font-size: 14px;
+      }
+      &:nth-child(5n - 4) {
+        margin-left: 0;
       }
       &:hover {
         transform: translate3d(0, 0, 300px);

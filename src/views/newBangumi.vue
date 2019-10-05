@@ -1,11 +1,11 @@
 <template>
   <div class="newBangumi">
-    <div :class="['date', activeName === item ? 'active' : '']" v-for="(item, index) in date" :key="index">
-      <span class="Date current">星期{{item}}</span>
+    <div :class="['date', activeName === day ? 'active' : '']" v-for="(day, index) in date" :key="index">
+      <span class="Date current">星期{{day}}</span>
       <Timeline>
-        <Timeline-item v-for="(item, index) in 2" :key="index">
+        <Timeline-item v-for="(item, index) in list[index]" :key="index">
           <p class="time">17:00</p>
-          <img src="../assets/img/misaka.webp" alt="">
+          <img src="../assets/img/misaka.jpg" alt="">
           <p class="content">魔法禁书目录3</p>
           <p class="content">第26话</p>
         </Timeline-item>
@@ -20,8 +20,15 @@ import { Component, Vue } from 'vue-property-decorator'
 export default class Login extends Vue {
   activeName: string = '一'
   date: Array<string> = ['一', '二', '三', '四', '五', '六', '日']
+  list: Array<Number> = []
   created () {
     this.defaultActive()
+    this.random(7)
+  }
+  random (len: number):void {
+    for (let i = 0; i < len; i++) {
+      this.list.push(Math.floor((Math.random() * 5) + 1))
+    }
   }
   defaultActive (): string {
     let getDay = new Date().getDay()

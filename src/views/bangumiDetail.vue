@@ -1,7 +1,7 @@
 <template>
   <div class="bangumiDetail">
     <div class="bg" style="">
-      <img src="../assets/img/test.webp"/>
+      <img src="../assets/img/test.png"/>
       <div class="right">
         <ul>
           <li>关于我转生成为史莱姆的这件事</li>
