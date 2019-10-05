@@ -9,21 +9,6 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      redirect: '/home'
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: () => import('./views/test.vue')
-    },
-    {
-      path: '/feedback',
-      name: 'feedback',
-      component: () => import('./views/feedback.vue')
-    },
-    {
-      path: '/home',
-      name: 'home',
       component: () => import('./views/Home.vue'),
       redirect: '/bangumi',
       children: [{
@@ -56,6 +41,16 @@ export default new Router({
         name: 'register',
         component: () => import('./views/register.vue')
       }]
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: () => import('./views/test.vue')
+    },
+    {
+      path: '/feedback',
+      name: 'feedback',
+      component: () => import('./views/feedback.vue')
     }
   ]
 })
