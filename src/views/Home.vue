@@ -4,7 +4,7 @@
       <div class="main horizontal">
         <div class="left">
           <ul class="center">
-            <router-link to="/bangumi" tag="li">主页</router-link>
+            <router-link to="bangumi" tag="li">主页</router-link>
             <router-link to="newBangumi" tag="li">新番</router-link>
           </ul>
         </div>
@@ -27,7 +27,7 @@
     <el-footer class="center" height="100px">
       <ul>
         <li>关于本站</li>
-        <li @click="feedback">意见反馈</li>
+        <li>意见反馈</li>
         <li>联系我们</li>
       </ul>
     </el-footer>
@@ -43,9 +43,6 @@ export default class Home extends Vue {
   login: Boolean = !false
   created () {
     console.log(this.$route)
-  }
-  feedback () {
-    window.open(location.origin + '/feedback', '_blank')
   }
 }
 </script>
@@ -66,8 +63,6 @@ export default class Home extends Vue {
   }
   .el-main, .main {
     width: 1200px;
-    border-left: 2px solid red;
-    border-right: 2px solid red;
     color: black;
     margin: auto;
     box-sizing: border-box;

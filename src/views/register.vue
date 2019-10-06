@@ -11,7 +11,6 @@
         <el-radio-group v-model="sex">
           <el-radio label="男"></el-radio>
           <el-radio label="女"></el-radio>
-          <el-radio label="保密"></el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>
@@ -27,7 +26,7 @@ import { Component, Vue } from 'vue-property-decorator'
 export default class Register extends Vue {
   username: string = ''
   password: string = ''
-  sex: string = '保密'
+  sex: string = '男'
   onSubmit () {
     console.log('submit!')
   }

@@ -3,7 +3,7 @@
     <div :class="['date', activeName === day ? 'active' : '']" v-for="(day, index) in date" :key="index">
       <span class="Date current">星期{{day}}</span>
       <Timeline>
-        <Timeline-item v-for="(item, index) in list[index]" :key="index">
+        <Timeline-item v-for="(item, index) in list[index]" :key="index" @click.native="$router.push('bangumiDetail')">
           <p class="time">17:00</p>
           <img src="../assets/img/misaka.jpg" alt="">
           <p class="content">魔法禁书目录3</p>
