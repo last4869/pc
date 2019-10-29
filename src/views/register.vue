@@ -21,6 +21,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { MessageBox } from 'element-ui'
 @Component({})
 
 export default class Register extends Vue {
@@ -28,7 +29,16 @@ export default class Register extends Vue {
   password: string = ''
   sex: string = '男'
   onSubmit () {
-    console.log('submit!')
+    console.log(this)
+    // return
+    this.http('user/register', 'post', {
+      username: this.username,
+      password: this.password,
+      sex: this.sex === '男' ? 0 : 1
+    }).then(res => {
+      console.log(res)
+      MessageBox('您的用户id是：' + res.data.uid, '注册成功')
+    })
   }
 }
 </script>
