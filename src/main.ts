@@ -10,7 +10,7 @@ import './assets/css/reset.css'
 import './assets/css/iconfont.css'
 
 Vue.config.productionTip = false
-Vue.prototype.http = http
+Vue.prototype.$http = http
 
 new Vue({
   router,

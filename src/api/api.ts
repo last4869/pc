@@ -1,11 +1,5 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 import { Message } from 'element-ui'
-
-declare module 'Vue/types/vue' {
-  interface Vue {
-    http: AxiosInstance
-  }
-}
 
 axios.interceptors.request.use(function (config) {
   return config
@@ -18,7 +12,11 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   return Promise.reject(error)
 })
-axios.defaults.baseURL = 'http://78.141.200.3:3000/api'
+
+axios.create({
+  baseURL: 'http://78.141.200.3:3000/api',
+  timeout: 5000
+})
 
 export default function http (url: string, method?: string, query?: object): Promise<any> {
   return new Promise((resolve, reject) => {
