@@ -87,14 +87,14 @@ export default class Register extends Vue {
   onSubmit () {
     console.log(this)
     return
-    this.$http('user/register', 'post', {
-      username: this.ruleForm.username,
-      password: this.ruleForm.password,
-      sex: this.ruleForm.sex === '男' ? 0 : 1
-    }).then((res: any) => {
-      console.log(res)
-      MessageBox('您的用户id是：' + res.data.uid, '注册成功')
-    })
+    // this.$http('user/register', 'post', {
+    //   username: this.ruleForm.username,
+    //   password: this.ruleForm.password,
+    //   sex: this.ruleForm.sex === '男' ? 0 : 1
+    // }).then((res: any) => {
+    //   console.log(res)
+    //   MessageBox('您的用户id是：' + res.data.uid, '注册成功')
+    // })
   }
 }
 </script>

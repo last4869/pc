@@ -7,10 +7,10 @@ module.exports = {
     if (process.env.NODE_ENV === 'production') {
       return {
         plugins: [
-          new PrerenderSPAPlugin({
-            staticDir: path.join(__dirname, 'dist'),
-            routes: ['/']
-          }),
+          // new PrerenderSPAPlugin({
+          //   staticDir: path.join(__dirname, 'dist'),
+          //   routes: ['/']
+          // }),
           new TerserPlugin({
             terserOptions: {
               cache: true,
