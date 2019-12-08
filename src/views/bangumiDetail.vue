@@ -90,29 +90,15 @@
         </div>
       </aside>
     </div>
-    <div class="mask" v-show="mask" >
-      <div class="player">
-        <span class="icon iconfont icon-close" @click="close"></span>
-        <player></player>
-      </div>
-    </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import player from '../components/player.vue'
 @Component({
-  components: {
-    player
-  }
 })
 export default class BangumiDetail extends Vue {
-  mask: Boolean = false
   jump () {
-    this.mask = true
-  }
-  close () {
-    this.mask = false
+    this.$router.push('player')
   }
 }
 </script>

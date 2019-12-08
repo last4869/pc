@@ -9,7 +9,7 @@ module.exports = {
         plugins: [
           new PrerenderSPAPlugin({
             staticDir: path.join(__dirname, 'dist'),
-            routes: [ '/', '/bangumi' ]
+            routes: ['/']
           }),
           new TerserPlugin({
             terserOptions: {

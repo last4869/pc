@@ -17,7 +17,13 @@ axios.create({
   baseURL: 'http://78.141.200.3:3000/api',
   timeout: 5000
 })
+// export default function http () {
+//   return new Promise((resolve, reject) => {
+//     axios.create({
 
+//     })
+//   })
+// }
 export default function http (url: string, method?: string, query?: object): Promise<any> {
   return new Promise((resolve, reject) => {
     axios({

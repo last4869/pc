@@ -25,9 +25,9 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage4"
+          :current-page="currentPage"
           :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="prev, pager, next"
           :total="400" background class="vertical">
         </el-pagination>
       </div>
@@ -40,7 +40,7 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({})
 export default class Bangumi extends Vue {
   searchValue: string = ''
-  currentPage4: number = 4
+  currentPage: number = 4
   created () {
     console.log(navigator.userAgent)
   }
@@ -53,6 +53,7 @@ export default class Bangumi extends Vue {
 }
 </script>
 <style lang="scss">
+.bangumi {
   .el-pagination {
     width: 100%;
     margin: 50px 0;
@@ -74,6 +75,7 @@ export default class Bangumi extends Vue {
     color: white;
     font-size: 16px;
   }
+}
 </style>
 <style lang="scss" scoped>
   .bangumi {

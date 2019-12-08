@@ -48,6 +48,7 @@ export default class Home extends Vue {
 </script>
 <style>
   .home {
+    min-width: 1200px;
     height: 100%;
     box-sizing: border-box;
     display: flex;
